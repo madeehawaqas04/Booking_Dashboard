@@ -20,10 +20,12 @@ export default function New() {
   const [disabled, setDisabled] = useState(false);
 
   console.log("userId", userId);
+  const accessToken = JSON.parse(localStorage.getItem("user"))?.token;
+  console.log("accessToken_Home", accessToken);
 
   const getUser = async () => {
     try {
-      const res = await userRequest.get(`/users/find/${userId}`);
+      const res = await userRequest(accessToken).get(`/users/find/${userId}`);
       console.log(res.data);
       const user = res.data;
       setInputs({ ...user })
@@ -57,10 +59,13 @@ export default function New() {
     }
 
     console.log("isFileExists", isFileExists);
-    const { username, email, phone, password, city, country, isAdmin } = inputs;
+    const { username, email, phone, password, cpassword, city, country, isAdmin } = inputs;
     console.log("inputs", inputs);
-    if (!username || !email || !city || !phone || !password || !country || isAdmin === "" || !isFileExists) {
+    if (!username || !email || !city || !phone || !password || !cpassword || !country || isAdmin === "" || !isFileExists) {
       toast.error("Please fill all fields", { position: "top-center" });
+    }
+    else if (cpassword != password) {
+      toast.error("Password and confirm password must be same!", { position: "top-center" });
     }
     else {
       setIsloading(true);
@@ -93,14 +98,14 @@ export default function New() {
         }
 
         if (userId === "new") {
-          await userRequest.post("auth/register", newUser);
+          await userRequest(accessToken).post("auth/register", newUser);
           setTimeout(function () {
             toast.success("user added successfully", { position: "top-center" });
           }, 2000);
           navigate("/users")
         }
         else {
-          await userRequest.put(`users/${userId}`, newUser);
+          await userRequest(accessToken).put(`users/${userId}`, newUser);
           setTimeout(function () {
             toast.success("user updated successfully", { position: "top-center" });
           }, 2000);
@@ -111,7 +116,7 @@ export default function New() {
       } catch (err) {
         setIsloading(true);
         toast.error("Something went wrong! Error" + err, { position: "top-center" });
-        console.log(err);
+        console.log(err.response.data?.message);
       }
     }
   };
@@ -174,16 +179,27 @@ export default function New() {
                               onChange={handleChange} />
                           </div>
                           {
-                            userId === "new" && 
+                            userId === "new" &&
                             <div className="form-group">
                               <label>Password <code className="text-danger">*</code></label>
                               <input type="password" class="form-control"
                                 name="password"
                                 onChange={handleChange} />
                             </div>
+
+                          }
+                          {
+                            userId === "new" &&
+                            <div className="form-group">
+                              <label>Confirm Password <code className="text-danger">*</code></label>
+                              <input type="cpassword" class="form-control"
+                                name="cpassword"
+                                onChange={handleChange} />
+                            </div>
+
                           }
 
-                          
+
 
                           <div className="form-group">
                             <label>Email <code className="text-danger">*</code></label>
@@ -201,7 +217,7 @@ export default function New() {
                         </div>
 
                         <div className="col-md-6 pl-3">
-                        <div className="form-group">
+                          <div className="form-group">
                             <label>Phone <code className="text-danger">*</code></label>
                             <input name="phone" placeholder="+1 234 567 89" value={inputs.phone}
                               type="number" className="form-control"

@@ -20,13 +20,16 @@ export default function New() {
     const { data, loading, error } = useFetch("/hotels");
 
     console.log("roomId", roomId);
-
+    const accessToken = JSON.parse(localStorage.getItem("user"))?.token;
+    console.log("accessToken_Home", accessToken);
+    
     const getRoom = async () => {
         try {
-            const res = await userRequest.get(`/rooms/find/${roomId}`);
+            const res = await userRequest(accessToken).get(`/rooms/find/${roomId}`);
             const room = res.data;
-            setHotelId(res.data.hotel);
+            setHotelId(res.data.hotelId);
             setInputs({ ...room });
+
             console.log("res.data", res.data, hotelId);
 
             // setImage(room.img);
@@ -63,14 +66,14 @@ export default function New() {
 
                 console.log("setInputs", inputs);
                 if (roomId === "new") {
-                    await userRequest.post(`/rooms/${hotelId}`, { ...inputs, roomNumbers, hotelId });
+                    await userRequest(accessToken).post(`/rooms/${hotelId}`, { ...inputs, roomNumbers, hotelId });
                     setTimeout(function () {
                         toast.success("room added successfully", { position: "top-center" });
                     }, 2000);
                     navigate("/rooms")
                 }
                 else {
-                    await userRequest.put(`rooms/${roomId}`, { ...inputs, roomNumbers });
+                    await userRequest(accessToken).put(`rooms/${roomId}`, { ...inputs, roomNumbers });
                     setTimeout(function () {
                         toast.success("room updated successfully", { position: "top-center" });
                     }, 2000);
@@ -133,7 +136,7 @@ export default function New() {
                                                     <div className="form-group">
                                                         <label >Choose a hotel <code className="text-danger">*</code></label>
                                                         <select className="form-control-lg custom-select"
-                                                            id="hotel" name="hotel" value={inputs.hotel}
+                                                            id="hotel" name="hotel" value={inputs.hotelId}
                                                             onChange={(e) => setHotelId(e.target.value)}>
                                                             <option value="" disabled="">Select Hotel</option>
                                                             {loading

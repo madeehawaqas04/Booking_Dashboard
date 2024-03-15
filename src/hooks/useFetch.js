@@ -8,13 +8,17 @@ const useFetch = (url) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
+  const accessToken = JSON.parse(localStorage.getItem("user"))?.token;
+  console.log("accessToken_fetchData", accessToken);
+
+
   //const apiURL = "http://localhost:8800/api";
   useEffect(() => {
    // 
     const fetchData = async () => {
       setLoading(true);
       try {
-        const res = await userRequest.get(url);
+        const res = await userRequest(accessToken).get(url);
         console.log("res.data.fetch",res.data);
         setData(res.data);
       } catch (err) {

@@ -20,11 +20,14 @@ export default function New() {
     const [disabled, setDisabled] = useState(false);
     const [files, setFiles] = useState("");
 
+    const accessToken = JSON.parse(localStorage.getItem("user"))?.token;
+    console.log("accessToken_Home", accessToken);
+
     console.log("hotelId", hotelId);
 
     const getHotel = async () => {
         try {
-            const res = await userRequest.get(`/hotels/find/${hotelId}`);
+            const res = await userRequest(accessToken).get(`/hotels/find/${hotelId}`);
             console.log(res.data);
             const hotel = res.data;
             setInputs({ ...hotel })
@@ -68,7 +71,7 @@ export default function New() {
             try {
                 if (files) {
                     var newhotel = {};
-               //     console.log("file", files);
+                    //     console.log("file", files);
 
                     const list = await Promise.all(
                         Object.values(files).map(async (file) => {
@@ -85,7 +88,7 @@ export default function New() {
                         })
                     );
 
-                 //   console.log("list", list);
+                    //   console.log("list", list);
 
                     newhotel = {
                         ...inputs,
@@ -100,14 +103,14 @@ export default function New() {
                 }
 
                 if (hotelId === "new") {
-                    await userRequest.post("hotels", newhotel);
+                    await userRequest(accessToken).post("hotels", newhotel);
                     setTimeout(function () {
                         toast.success("Hotel added successfully", { position: "top-center" });
                     }, 2000);
                     navigate("/hotels")
                 }
                 else {
-                    await userRequest.put(`hotels/${hotelId}`, newhotel);
+                    await userRequest(accessToken).put(`hotels/${hotelId}`, newhotel);
                     setTimeout(function () {
                         toast.success("Hotel updated successfully", { position: "top-center" });
                     }, 2000);
@@ -138,7 +141,7 @@ export default function New() {
 
                                         <div className="card-body">
                                             <div className="d-flex justify-content-between">
-                                            <h2 className="mb-5">{hotelId === "new" ? "Create Hotel" : "Update Hotel" }</h2>
+                                                <h2 className="mb-5">{hotelId === "new" ? "Create Hotel" : "Update Hotel"}</h2>
                                                 <Link to='/hotels' className="link">
                                                     <button type="button" className="btn btn-primary btn-icon-text">
                                                         <i className="ti-arrow-left mdi mdi-arrow-left"></i>

@@ -5,19 +5,13 @@ import { NavLink, Link } from 'react-router-dom'
 export default function WidgetSm() {
   const [users, setUsers] = useState([]);
 
-  const showError = (error) => {
-    console.log(error);
-    if (error.response && error.response.data === 'Token is not valid!') {
-      dispatch(logout())
-      navigate('/login')
-      window.location.reload();
-    }
-  }
+  const accessToken = JSON.parse(localStorage.getItem("user"))?.token;
+  console.log("accessToken_Home", accessToken);
 
   useEffect(() => {
     const getUsers = async () => {
       try {
-        const res = await userRequest.get("users?limit=5");
+        const res = await userRequest(accessToken).get("users?limit=5");
         setUsers(res.data);
       } catch (error) {
         showError(error);

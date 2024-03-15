@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import { userRequest } from "../requestMethods";
 import { NavLink, Link } from 'react-router-dom'
-// import { useSelector, useDispatch } from "react-redux";
-// import { logout } from "../redux/userRedux";
 import { useNavigate } from 'react-router-dom'
 
 export default function FeaturedInfo() {
@@ -10,19 +8,16 @@ export default function FeaturedInfo() {
   const [totalApartments, setTotalApartments] = useState([]);
   const [totalResorts, setTotalResorts] = useState([]);
   const [totaluser, setTotaluser] = useState([]);
-  // const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  //let accessToken = null;
-  // const user = useSelector((state) => state.user);
-  // const accessToken = useSelector((state) => state.user.currentUser.accessToken);
-  // console.log("user.currentUser", user.currentUser + accessToken);
+  
+  const accessToken = JSON.parse(localStorage.getItem("user"))?.token;
+  console.log("accessToken_Home", accessToken);
 
 
   useEffect(() => {
     const getTotalHotel = async () => {
       try {
-        const res = await userRequest.get("hotels/countByType");
+        const res = await userRequest(accessToken).get("hotels/countByType");
       //  console.log("hotels data", res.data);
         const list = res.data;
         //get total hotel
@@ -49,15 +44,10 @@ export default function FeaturedInfo() {
 
   const getTotalUser = async () => {
     try {
-      const res = await userRequest.get("users/getUersCount");
+      const res = await userRequest(accessToken).get("users/getUersCount");
       setTotaluser(res.data.count);
     } catch (error) { console.log(error); }
   }
-
-
-  // console.log("totalorder", totalorder.length);
-  // console.log("totalproduct", totalproduct.length);
-  // console.log("totaluser", totaluser.length);
 
   return (
     <>
@@ -134,63 +124,6 @@ export default function FeaturedInfo() {
       </div>
     </>
 
-    // <div className="row">
-    //   <div className="col-lg-3 col-6">
-    //     {/* small box */}
-    //     <div className="small-box bg-info">
-    //       <div className="inner">
-    //         <h3>{totalorder.length}</h3>
-    //         <p>New Orders</p>
-    //       </div>
-    //       <div className="icon">
-    //         <i className="ion ion-bag" />
-    //       </div>
-    //       <NavLink to="/orders" className="small-box-footer">More info <i className="fas fa-arrow-circle-right" /></NavLink>
-    //     </div>
-    //   </div>
-    //   {/* ./col */}
-    //   <div className="col-lg-3 col-6">
-    //     {/* small box */}
-    //     <div className="small-box bg-success">
-    //       <div className="inner">
-    //         <h3>{totalproduct.length}<sup style={{ fontSize: 20 }}></sup></h3>
-    //         <p>Total Products</p>
-    //       </div>
-    //       <div className="icon">
-    //         <i className="ion ion-stats-bars" />
-    //       </div>
-    //       <NavLink to="/products" className="small-box-footer">More info <i className="fas fa-arrow-circle-right" /></NavLink>
-    //     </div>
-    //   </div>
-    //   {/* ./col */}
-    //   <div className="col-lg-3 col-6">
-    //     {/* small box */}
-    //     <div className="small-box bg-warning">
-    //       <div className="inner">
-    //         <h3>{totaluser.length}</h3>
-    //         <p>User Registrations</p>
-    //       </div>
-    //       <div className="icon">
-    //         <i className="ion ion-person-add" />
-    //       </div>
-    //       <NavLink to="/users" className="small-box-footer">More info <i className="fas fa-arrow-circle-right" /></NavLink>
-    //     </div>
-    //   </div>
-    //   {/* ./col */}
-    //   <div className="col-lg-3 col-6">
-    //     {/* small box */}
-    //     <div className="small-box bg-danger">
-    //       <div className="inner">
-    //         <h3>65</h3>
-    //         <p>Unique Visitors</p>
-    //       </div>
-    //       <div className="icon">
-    //         <i className="ion ion-pie-graph" />
-    //       </div>
-    //       <a href="#" className="small-box-footer">More info <i className="fas fa-arrow-circle-right" /></a>
-    //     </div>
-    //   </div>
-    //   {/* ./col */}
-    // </div>
+  
   );
 }

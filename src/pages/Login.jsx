@@ -1,11 +1,13 @@
 import { useContext, useState } from "react";
-import { publicRequest } from "../requestMethods";
+// import { publicRequest } from "../requestMethods";
 import { NavLink, useNavigate } from "react-router-dom";
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';
 import { AuthContext } from "../../src/context/AuthContext";
+import axios from "axios";
 
 const Login = () => {
+  const API_URL = import.meta.env.VITE_API_URL;
   const { loading, error, dispatch } = useContext(AuthContext);
 
   const [username, setUsername] = useState("");
@@ -21,7 +23,7 @@ const Login = () => {
     else {
       try {
         dispatch({ type: "LOGIN_START" });
-        const res = await publicRequest.post("/auth/login", { username, password });
+        const res = await axios.post(API_URL +"auth/login", { username, password });
         if (res.data != null) {
           if (res.data.isAdmin) {
             dispatch({ type: "LOGIN_SUCCESS", payload: res.data });

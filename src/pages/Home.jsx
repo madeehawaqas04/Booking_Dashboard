@@ -8,6 +8,7 @@ import WidgetLg from '../components/WidgetLg';
 import { Link } from "react-router-dom";
 
 const Home = () => {
+
     const [isSettingOpen, setIsSettingopen] = useState(false);
     const ToggleSetting = () => {
 
