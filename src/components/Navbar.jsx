@@ -6,19 +6,22 @@ import { SideBarContext } from "../context/sideBarContext";
 import { DarkModeContext } from "../context/darkModeContext";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import DarkModeIcon from '@mui/icons-material/DarkMode';
-// import { useDispatch, useSelector } from 'react-redux';
-// import { logout } from "../redux/userRedux";
+import { publicRequest } from "../requestMethods";
+
 
 const Navbar = () => {
   // const isToggle = useContext(DarkModeContext);
   const { loading, error, dispatch } = useContext(AuthContext);
   const { dispatchSidebar } = useContext(SideBarContext);
-  // const navigate = useNavigate()
-  // const dispatch = useDispatch()
+ 
   const navigate = useNavigate();
-  const onLogout = () => {
-    dispatch({ type: "LOGOUT" });
-    navigate('/login')
+  const onLogout = async () => {
+    try {
+      await publicRequest.post("/auth/logout");
+      dispatch({ type: "LOGOUT" });
+      navigate('/login')
+    }
+    catch (error) { console.log(error); }
   }
   const [isOpen, setIsopen] = useState(false);
   const [isDark, setDark] = useState(false);
@@ -42,17 +45,13 @@ const Navbar = () => {
   const ToggleDarkMode = () => {
 
     if (isDark === true) {
-      // console.log("dispatchDarkMode", isToggle,isDark);
       document.body.classList.add('sidebar-light');
       document.body.classList.remove('sidebar-dark');
-      // dispatchSidebar({ type: "LIGHT" })
       setDark(false);
     }
     else {
-      //console.log("dispatchDarkMode", isToggle,isDark);
       document.body.classList.remove('sidebar-light');
       document.body.classList.add('sidebar-dark');
-      // dispatchSidebar({ type: "DARK" })
       setDark(true);
     }
   }
@@ -69,7 +68,7 @@ const Navbar = () => {
 
       <nav className="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
         <div className="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-          <a className="navbar-brand brand-logo mr-5" href="index.html"><img src="/images/logo.svg" className="mr-2" alt="logo" /></a>
+          <a className="navbar-brand brand-logo mr-5" href="index.html">Admin <b class="font-black">Portal</b></a>
           <a className="navbar-brand brand-logo-mini" href="index.html"><img src="/images/logo-mini.svg" alt="logo" /></a>
         </div>
         <div className="navbar-menu-wrapper d-flex align-items-center justify-content-end">

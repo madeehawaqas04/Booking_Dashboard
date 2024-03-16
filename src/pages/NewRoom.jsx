@@ -18,14 +18,10 @@ export default function New() {
     const [rooms, setRooms] = useState([]);
 
     const { data, loading, error } = useFetch("/hotels");
-
-    console.log("roomId", roomId);
-    const accessToken = JSON.parse(localStorage.getItem("user"))?.token;
-    console.log("accessToken_Home", accessToken);
     
     const getRoom = async () => {
         try {
-            const res = await userRequest(accessToken).get(`/rooms/find/${roomId}`);
+            const res = await userRequest.get(`/rooms/find/${roomId}`);
             const room = res.data;
             setHotelId(res.data.hotelId);
             setInputs({ ...room });
@@ -66,14 +62,14 @@ export default function New() {
 
                 console.log("setInputs", inputs);
                 if (roomId === "new") {
-                    await userRequest(accessToken).post(`/rooms/${hotelId}`, { ...inputs, roomNumbers, hotelId });
+                    await userRequest.post(`/rooms/${hotelId}`, { ...inputs, roomNumbers, hotelId });
                     setTimeout(function () {
                         toast.success("room added successfully", { position: "top-center" });
                     }, 2000);
                     navigate("/rooms")
                 }
                 else {
-                    await userRequest(accessToken).put(`rooms/${roomId}`, { ...inputs, roomNumbers });
+                    await userRequest.put(`rooms/${roomId}`, { ...inputs, roomNumbers });
                     setTimeout(function () {
                         toast.success("room updated successfully", { position: "top-center" });
                     }, 2000);

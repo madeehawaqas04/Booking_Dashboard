@@ -20,14 +20,11 @@ export default function New() {
     const [disabled, setDisabled] = useState(false);
     const [files, setFiles] = useState("");
 
-    const accessToken = JSON.parse(localStorage.getItem("user"))?.token;
-    console.log("accessToken_Home", accessToken);
-
-    console.log("hotelId", hotelId);
+   // console.log("hotelId", hotelId);
 
     const getHotel = async () => {
         try {
-            const res = await userRequest(accessToken).get(`/hotels/find/${hotelId}`);
+            const res = await userRequest.get(`/hotels/find/${hotelId}`);
             console.log(res.data);
             const hotel = res.data;
             setInputs({ ...hotel })
@@ -103,14 +100,14 @@ export default function New() {
                 }
 
                 if (hotelId === "new") {
-                    await userRequest(accessToken).post("hotels", newhotel);
+                    await userRequest.post("hotels", newhotel);
                     setTimeout(function () {
                         toast.success("Hotel added successfully", { position: "top-center" });
                     }, 2000);
                     navigate("/hotels")
                 }
                 else {
-                    await userRequest(accessToken).put(`hotels/${hotelId}`, newhotel);
+                    await userRequest.put(`hotels/${hotelId}`, newhotel);
                     setTimeout(function () {
                         toast.success("Hotel updated successfully", { position: "top-center" });
                     }, 2000);

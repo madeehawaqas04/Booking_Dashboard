@@ -6,17 +6,14 @@ import { format } from "timeago.js"
 export default function WidgetLg() {
   const [hotels, sethotels] = useState([]);
 
-  const accessToken = JSON.parse(localStorage.getItem("user"))?.token;
-  console.log("accessToken_Home", accessToken);
-
-
   useEffect(() => {
     const gethotels = async () => {
       try {
-        const res = await userRequest(accessToken).get("hotels?limit=5");
+        const res = await userRequest.get("hotels?limit=5");
         sethotels(res.data);
       } catch (error) {
         //showError(error);
+        console.log(error);
       }
     };
     gethotels();

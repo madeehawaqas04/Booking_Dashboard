@@ -9,15 +9,11 @@ export default function FeaturedInfo() {
   const [totalResorts, setTotalResorts] = useState([]);
   const [totaluser, setTotaluser] = useState([]);
   const navigate = useNavigate();
-  
-  const accessToken = JSON.parse(localStorage.getItem("user"))?.token;
-  console.log("accessToken_Home", accessToken);
-
 
   useEffect(() => {
     const getTotalHotel = async () => {
       try {
-        const res = await userRequest(accessToken).get("hotels/countByType");
+        const res = await userRequest.get("hotels/countByType");
       //  console.log("hotels data", res.data);
         const list = res.data;
         //get total hotel
@@ -44,7 +40,7 @@ export default function FeaturedInfo() {
 
   const getTotalUser = async () => {
     try {
-      const res = await userRequest(accessToken).get("users/getUersCount");
+      const res = await userRequest.get("users/getUersCount");
       setTotaluser(res.data.count);
     } catch (error) { console.log(error); }
   }

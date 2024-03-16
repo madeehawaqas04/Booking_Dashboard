@@ -30,39 +30,39 @@ const Sidebar = () => {
                         <div className="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
                             <i className="icon-layout menu-icon" />
                             <Link to="/users" ><span className="menu-title">Users</span></Link>
-                            <i className="menu-arrow" />
+                            {/* <i className="menu-arrow" /> */}
                         </div>
-                        <div className="collapse" id="ui-basic">
+                        {/* <div className="collapse" id="ui-basic">
                             <ul className="nav flex-column sub-menu">
                                 <li className="nav-item"> <Link className="nav-link" to="/users/new">Create Users</Link></li>
                             </ul>
-                        </div>
+                        </div> */}
                     </li>
                     <li className="nav-item">
                         <div className="nav-link" data-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="form-elements">
                             <i className="icon-columns menu-icon" />
                             <Link to="/hotels" ><span className="menu-title">Hotels</span></Link>
-                            <i className="menu-arrow" />
+                            {/* <i className="menu-arrow" /> */}
                         </div>
-                        <div className="collapse" id="form-elements">
+                        {/* <div className="collapse" id="form-elements">
                             <ul className="nav flex-column sub-menu">
                                 <li className="nav-item">
                                     <Link className="nav-link" to="/hotels/new">Create Hotels</Link></li>
                             </ul>
-                        </div>
+                        </div> */}
                     </li>
                     <li className="nav-item">
                         <div className="nav-link" data-toggle="collapse" href="#charts" aria-expanded="false" aria-controls="charts">
                             <i className="icon-bar-graph menu-icon" />
                            <Link to="/rooms"> <span className="menu-title">Rooms</span></Link>
-                            <i className="menu-arrow" />
+                            {/* <i className="menu-arrow" /> */}
                         </div>
-                        <div className="collapse" id="charts">
+                        {/* <div className="collapse" id="charts">
                             <ul className="nav flex-column sub-menu">
                                 <li className="nav-item">
                             <Link className="nav-link" to="/rooms/new">Create Room</Link></li>
                             </ul>
-                        </div>
+                        </div> */}
                     </li>
                     <li className="nav-item">
                         <div className="nav-link" data-toggle="collapse" href="#tables" aria-expanded="false" aria-controls="tables">

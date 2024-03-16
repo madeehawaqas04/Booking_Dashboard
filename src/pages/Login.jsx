@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-// import { publicRequest } from "../requestMethods";
+import { publicRequest } from "../requestMethods";
 import { NavLink, useNavigate } from "react-router-dom";
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';
@@ -7,7 +7,6 @@ import { AuthContext } from "../../src/context/AuthContext";
 import axios from "axios";
 
 const Login = () => {
-  const API_URL = import.meta.env.VITE_API_URL;
   const { loading, error, dispatch } = useContext(AuthContext);
 
   const [username, setUsername] = useState("");
@@ -23,7 +22,7 @@ const Login = () => {
     else {
       try {
         dispatch({ type: "LOGIN_START" });
-        const res = await axios.post(API_URL +"auth/login", { username, password });
+        const res = await publicRequest.post("auth/login", { username, password });
         if (res.data != null) {
           if (res.data.isAdmin) {
             dispatch({ type: "LOGIN_SUCCESS", payload: res.data });
@@ -40,8 +39,8 @@ const Login = () => {
 
       }
       catch (err) {
-        dispatch({ type: "LOGIN_FAILURE", payload: err.response.data });
-        toast.error(err.response.data, { position: "top-center" });
+        dispatch({ type: "LOGIN_FAILURE", payload: err.response?.data.message });
+        toast.error(err.response?.data.message, { position: "top-center" });
       }
     }
   };
@@ -49,77 +48,77 @@ const Login = () => {
 
   return (
     <>
-    <div className="container-scroller">
-  <div className="container-fluid page-body-wrapper full-page-wrapper">
-    <div className="content-wrapper d-flex align-items-center auth px-0 common-img-bg">
-      <div className="row w-100 mx-0">
-        <div className="col-lg-4 mx-auto">
-          <div className="auth-form-light text-left py-5 px-4 px-sm-5">
-            <div className="brand-logo">
-              <img src="../../images/logo.svg" alt="logo" />
-            </div>
-            <h4>Hello! let's get started</h4>
-            <h6 className="font-weight-light">Sign in to continue.</h6>
-            <form className="pt-3">
-              <div className="form-group">
-              <input type="text" className="form-control"
-                    placeholder="user name" id="username"
-                    onChange={(e) => setUsername(e.target.value)} />
-              </div>
-              <div className="form-group">
-              <input type="password" className="form-control"
-                    placeholder="Password"
-                    onChange={(e) => setPassword(e.target.value)} />
-              </div>
-              <div className="mt-3 mb-3">
-                {
-                  loading ?
-                    <button id="btnLoading" className="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" type="button" disabled>
-                      <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                      Loading...
-                    </button>
-                    :
-                    <button type="submit"
-                      className="btn btn-primary btn-blockbtn btn-block btn-primary btn-lg font-weight-medium auth-form-btn"
-                      onClick={handleClick}
-                    >Sign In</button>
-                }
-                {error && <span>{error.message}</span>}
+      <div className="container-scroller">
+        <div className="container-fluid page-body-wrapper full-page-wrapper">
+          <div className="content-wrapper d-flex align-items-center auth px-0 common-img-bg">
+            <div className="row w-100 mx-0">
+              <div className="col-lg-4 mx-auto">
+                <div className="auth-form-light text-left py-5 px-4 px-sm-5">
+                  <div className="brand-logo">
+                  <h2 className="align-items text-center pb-3 pt-3">Login In</h2>
+                  </div>
+                  {/* <h4>Hello! let's get started</h4>
+                  <h6 className="font-weight-light">Sign in to continue.</h6> */}
+                  <form className="pt-3">
+                    <div className="form-group">
+                      <input type="text" className="form-control"
+                        placeholder="user name" id="username"
+                        onChange={(e) => setUsername(e.target.value)} />
+                    </div>
+                    <div className="form-group">
+                      <input type="password" className="form-control"
+                        placeholder="Password"
+                        onChange={(e) => setPassword(e.target.value)} />
+                    </div>
+                    <div className="mt-3 mb-3">
+                      {
+                        loading ?
+                          <button id="btnLoading" className="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" type="button" disabled>
+                            <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                            Loading...
+                          </button>
+                          :
+                          <button type="submit"
+                            className="btn btn-primary btn-blockbtn btn-block btn-primary btn-lg font-weight-medium auth-form-btn"
+                            onClick={handleClick}
+                          >Sign In</button>
+                      }
+                      {error && <span>{error.message}</span>}
 
-              </div>
-              <div className="my-2 d-flex justify-content-between align-items-center">
-                <div className="form-check">
-                  {/* <label className="form-check-label text-muted">
+                    </div>
+                    <div className="my-2 d-flex justify-content-between align-items-center">
+                      <div className="form-check">
+                        {/* <label className="form-check-label text-muted">
                     <input type="checkbox" className="form-check-input" />
                     Keep me signed in
                   </label> */}
-                   <input type="checkbox" id="remember" />
-                      <label htmlFor="remember" className=" p-3">
-                        Remember Me
-                      </label>
+                        <input type="checkbox" id="remember" />
+                        <label htmlFor="remember" className=" p-3">
+                          Remember Me
+                        </label>
+                      </div>
+                    </div>
+
+                    <div className="text-center mt-2 font-weight-light">
+                      <NavLink to="/register" className="text-primary p-2">Forgot password?</NavLink>
+                    </div>
+
+                    <div className="text-center mt-2 font-weight-light">
+                      Don't have an account?
+                      <NavLink to="/register" className="text-primary p-2">Register</NavLink>
+                    </div>
+                  </form>
                 </div>
               </div>
-              
-              <div className="text-center mt-2 font-weight-light">
-                <NavLink to="/register" className="text-primary p-2">Forgot password?</NavLink>
-              </div>
-
-              <div className="text-center mt-2 font-weight-light">
-                Don't have an account? 
-                <NavLink to="/register" className="text-primary p-2">Register</NavLink>
-              </div>
-            </form>
+            </div>
           </div>
+          {/* content-wrapper ends */}
         </div>
+        {/* page-body-wrapper ends */}
       </div>
-    </div>
-    {/* content-wrapper ends */}
-  </div>
-  {/* page-body-wrapper ends */}
-</div>
 
 
-{/* 
+      {/* 
       <div className="hold-transition login-page">
         <div className="login-box">
           <div className="card card-outline card-primary">

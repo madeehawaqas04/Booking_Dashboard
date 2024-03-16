@@ -19,13 +19,9 @@ export default function New() {
   const [isloading, setIsloading] = useState(false);
   const [disabled, setDisabled] = useState(false);
 
-  console.log("userId", userId);
-  const accessToken = JSON.parse(localStorage.getItem("user"))?.token;
-  console.log("accessToken_Home", accessToken);
-
   const getUser = async () => {
     try {
-      const res = await userRequest(accessToken).get(`/users/find/${userId}`);
+      const res = await userRequest.get(`/users/find/${userId}`);
       console.log(res.data);
       const user = res.data;
       setInputs({ ...user })
@@ -98,14 +94,14 @@ export default function New() {
         }
 
         if (userId === "new") {
-          await userRequest(accessToken).post("auth/register", newUser);
+          await userRequest.post("auth/register", newUser);
           setTimeout(function () {
             toast.success("user added successfully", { position: "top-center" });
           }, 2000);
           navigate("/users")
         }
         else {
-          await userRequest(accessToken).put(`users/${userId}`, newUser);
+          await userRequest.put(`users/${userId}`, newUser);
           setTimeout(function () {
             toast.success("user updated successfully", { position: "top-center" });
           }, 2000);
