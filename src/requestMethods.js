@@ -11,7 +11,14 @@ export const publicRequest = axios.create({
 
 export const userRequest = axios.create({
   baseURL: API_URL,
+  mode:'cors',
+  credentials:'include',
   withCredentials: true,
+  crossDomain: true,
+  headers: {
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
+  },
   // headers: { token: `Bearer ${accessToken}` },
 });
 
