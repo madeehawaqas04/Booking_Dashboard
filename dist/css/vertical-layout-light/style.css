@@ -28397,7 +28397,7 @@ div.tagsinput span.tag a {
 .auth form .form-group .tt-query,
 .auth form .form-group .tt-hint {
   background: transparent;
-  border-radius: 0;
+  border-radius: 6px;
   font-size: .9375rem;
 }
 
@@ -30590,6 +30590,10 @@ div.tagsinput span.tag a {
   #settings-trigger {
     display: none;
   }
+}
+
+.auth form .form-group .form-control {
+  border-radius: 6px !important;
 }
 
 /*# sourceMappingURL=../maps/vertical-layout-light/style.css.map */

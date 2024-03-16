@@ -14385,3 +14385,7 @@ button:disabled {
   cursor: not-allowed;
   pointer-events: all !important;
 }
+
+.auth form .form-group .form-control {
+  border-radius: 6px !important;
+}
